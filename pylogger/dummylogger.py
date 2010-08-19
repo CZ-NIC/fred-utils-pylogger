@@ -14,10 +14,10 @@ class DummyLogger(object):
     def start_session(self, *args, **kwargs):
         return True
 
-    def set_common_property(self, *args, **kwargs):
-        return
-
     def create_request(self, *args, **kwargs):
+        return DummyLogRequest()
+
+    def create_dummy_request(self, *args, **kwargs):
         return DummyLogRequest()
 
     def create_request_login(self, *args, **kwargs):
@@ -28,12 +28,6 @@ class DummyLogger(object):
 
 
 class DummyLogRequest(object):
-    def update(self, *args, **kwargs):
-        return True
-
-    def update_multiple(self, *args, **kwargs):
-        return True
-
     def close(self, *args, **kwargs):
         return True
 
