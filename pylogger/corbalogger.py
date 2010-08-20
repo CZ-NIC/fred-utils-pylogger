@@ -5,7 +5,7 @@
     Logging framework.
 """
 
-from apps.nicommon import corbarecoder as recoder
+import corbarecoder as recoder
 import dummylogger
 import omniORB
 import traceback
