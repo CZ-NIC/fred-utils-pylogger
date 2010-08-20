@@ -31,7 +31,7 @@ class Logger(object):
     """ 
     Logger for a session.
 
-    Example usage:
+    Example usage (in nicms):
 from apps.nicommon.utils import get_logger
 logger = get_logger()
 props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True]]
@@ -70,7 +70,7 @@ finally:
             to.
     """
 
-    def __init__(self, corba):
+    def __init__(self, logger_corba_object, corba_module):
         """Inits Logger.
 
             Arguments:
@@ -80,8 +80,8 @@ finally:
                     mock object for unit tests.
 
         """
-        self.corba = corba
-        self.dao = corba.get_object('Logger', 'ccReg.Logger')
+        self.dao = logger_corba_object
+        self.corba_module = corba_module
         
         self.request_type_codes = {}
         self.result_codes = {}
@@ -205,7 +205,7 @@ finally:
             value = str(self._convert_nested_to_str(value))
         name = recoder.u2c(name)
         value = recoder.u2c(value)
-        prop = self.corba.ccReg.RequestProperty(name, value, False, child)
+        prop = self.corba_module.RequestProperty(name, value, False, child)
         return prop
         
 
@@ -295,7 +295,6 @@ class LogRequest(object):
 
     def __init__(self, logger, request_id, service, request_type, default_result):
         self.logger = logger
-        self.corba = logger.corba
         self.dao = logger.dao
         self.request_id = request_id
         self.service = service
