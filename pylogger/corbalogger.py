@@ -70,7 +70,7 @@ finally:
             to.
     """
 
-    def __init__(self, logger_corba_object, corba_module):
+    def __init__(self, dao, corba_module):
         """Inits Logger.
 
             Arguments:
@@ -80,7 +80,7 @@ finally:
                     mock object for unit tests.
 
         """
-        self.dao = logger_corba_object
+        self.dao = dao
         self.corba_module = corba_module
         
         self.request_type_codes = {}
@@ -97,6 +97,7 @@ finally:
         self.default_results = {
             'MojeID': 'Error',
             'EPP': 'CommandFailed',
+            'WebAdmin': 'Error',
         } 
 
     def start_session(self, user_id, username):
@@ -282,7 +283,7 @@ class LogRequest(object):
             req = session_logger.create_request(...)
             req.update("example_property", 132)
             ...
-            req.close("<foo/>")
+            req.close("")
 
         Arguments:
             dao: Data Access Object for logging. Usually Corba Logger object.
