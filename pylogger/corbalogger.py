@@ -326,7 +326,7 @@ class LoggerFailSilent(Logger):
 
     def start_session(self, *args, **kwargs):
         try:
-            Logger.start_session(self, *args, **kwargs)
+            return Logger.start_session(self, *args, **kwargs)
         except LoggingException:
             pass
         except omniORB.CORBA.SystemException:
