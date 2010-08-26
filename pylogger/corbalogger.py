@@ -10,6 +10,7 @@ import dummylogger
 import omniORB
 import traceback
 import datetime
+import logging
 
 __all__ = ["Logger", "LogRequest", 
             "LoggingException", "service_type_webadmin"]
@@ -183,7 +184,7 @@ finally:
             self.result_codes[service_type.name][result_code.name] = result_code.result_code
     
     def _load_object_types(self):
-        object_type_list = self.dao.getObjectTypes()
+        object_type_list = []#self.dao.getObjectTypes()
         for object_type in object_type_list:
             self.object_types[object_type.name] = object_type.id
 
@@ -229,7 +230,9 @@ finally:
         converted_references = []
         if references:
             for ref in references:
-                pass # TODO: Finish conversion
+                #object_type = self.object_types[ref[0]]
+                object_type = ref[0] # TODO: change to previous line when
+                converted_references.append(self.corba_module.Logger.ObjectReference(object_type, ref[1]))
         return converted_references
 
     def _server_create_request(self, source_ip, content, service_name, request_type_name, 
@@ -242,18 +245,7 @@ finally:
             content = ""
         if session_id is None:
             session_id = 0
-#        try:
-#            service_code = self.service_codes[service_name]
-#        except KeyError:
-#            raise ValueError(
-#                "Invalid service name %s. Original exception: %s." %
-#                (service_name, traceback.format_exc()))
-#        try:
-#            request_type_code = self.request_type_codes[request_type_name]
-#        except KeyError:
-#            raise ValueError(
-#                "Invalid request type %s. Original exception: %s." %
-#                (request_type_name, traceback.format_exc()))
+
         converted_properties = self.convert_properties(properties)
         converted_references = self.convert_references(references)
         try:
@@ -334,8 +326,8 @@ class LoggerFailSilent(Logger):
             # I have to reraise it, so that I know in ADIF.login that I should
             # hide away the logger...
             raise
-        except Exception:
-            pass
+        except Exception, e:
+            logging.error('Logger failed to error during start_session: %s.', e)
 
     def create_request(self, source_ip, service_name, request_type_name, 
                        properties=None, references = None, session_id=None, 
@@ -351,14 +343,15 @@ class LoggerFailSilent(Logger):
                 source_ip, content, service_name, request_type_name, properties, references, session_id)
             log_request = LogRequestFailSilent(self, request_id, service_name, request_type_name, default_result)
             return log_request
-        except Exception:
+        except Exception, e:
+            logging.error('Logger failed to error during create_request: %s.', e)
             return dummylogger.DummyLogRequest()
 
     def close_session(self, *args, **kwargs): 
         try:
             Logger.close_session(self, *args, **kwargs)
         except Exception:
-            pass
+            logging.error('Logger failed to error during close_session: %s.', e)
 
 
 class LogRequestFailSilent(LogRequest):
@@ -370,8 +363,8 @@ class LogRequestFailSilent(LogRequest):
     def close(self, *args, **kwargs):
         try:
             LogRequest.close(self, *args, **kwargs)
-        except Exception:
-            pass
+        except Exception, e:
+            logging.error('Logger failed to error during request.close: %s.', e)
 
 
 class LoggingException(Exception):
