@@ -232,7 +232,7 @@ finally:
             for ref in references:
                 #object_type = self.object_types[ref[0]]
                 object_type = ref[0] # TODO: change to previous line when
-                converted_references.append(self.corba_module.Logger.ObjectReference(object_type, ref[1]))
+                converted_references.append(self.corba_module.ObjectReference(object_type, ref[1]))
         return converted_references
 
     def _server_create_request(self, source_ip, content, service_name, request_type_name, 
