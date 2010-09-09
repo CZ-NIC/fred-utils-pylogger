@@ -1,6 +1,8 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
 import types
 import codecs
-import exceptions
+
 
 class UnsupportedEncodingError(Exception):
     pass
@@ -25,8 +27,8 @@ class CorbaRecode(object):
         try:
             codecs.lookup(coding)
             self.coding = coding
-        except (codecs.LookupError,), (val, no):
-            raise UnsupportedEncodingError(val, no)
+        except LookupError, msg:
+            raise UnsupportedEncodingError(msg)
 
     def decode(self, answer):
         if type(answer) in types.StringTypes:
@@ -50,8 +52,10 @@ class CorbaRecode(object):
             return answer
         
     def encode(self, answer):
-        if type(answer) in types.StringTypes:
+        if isinstance(answer, unicode): # types.UnicodeType
             return answer.encode(self.coding)
+        if isinstance(answer, str):
+            return answer
         if type(answer) in self.BasicTypes:
             return answer
         elif type(answer) in self.IterTypes:
