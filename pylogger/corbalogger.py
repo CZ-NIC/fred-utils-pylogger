@@ -145,9 +145,7 @@ finally:
         """
         if session_id is None:
             raise LoggingException("Error in close_session: session_id cannot be None.")
-        ret_code = self.dao.closeSession(session_id)
-        if ret_code == 0:
-            raise LoggingException("CloseSession failed.")
+        self.dao.closeSession(session_id)
     
     def _load_all_type_codes(self):
         """
