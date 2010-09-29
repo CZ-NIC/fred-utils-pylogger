@@ -28,6 +28,9 @@ class DummyLogger(object):
 
 
 class DummyLogRequest(object):
+    def __init__(self, *args, **kwargs):
+        self.request_id = 1
+    
     def close(self, *args, **kwargs):
         return True
 
