@@ -28,6 +28,7 @@ service_type_webadmin = 4
 *** Class definitions ***
 """
 
+
 class Logger(object):
     """ 
     Logger for a session.
@@ -113,6 +114,7 @@ finally:
         else:
             username = recoder.u2c(username)
 
+        logging.debug("<Logger %s> createSession %s %s" % (id(self), user_id, username))
         session_id = self.dao.createSession(user_id, username)
         if session_id == 0:
             raise LoggingException(
@@ -134,7 +136,7 @@ finally:
             source_ip, content, service_name, request_type_name, properties, references, session_id)
         log_request = LogRequest(self, request_id, service_name, request_type_name, default_result)
         return log_request
-    
+
     def create_dummy_request(self, *args, **kwargs):
         return dummylogger.DummyLogRequest(*args, **kwargs)
 
@@ -145,25 +147,27 @@ finally:
         """
         if session_id is None:
             raise LoggingException("Error in close_session: session_id cannot be None.")
+        logging.debug("<Logger %s> closeSession %s" % (id(self), session_id))
         self.dao.closeSession(session_id)
-    
+
     def _load_all_type_codes(self):
         """
             Loads all service types and request types to attributes 
             request_type_codes and service_codes.
         """
-        
+        logging.debug("<Logger %s> getServices" % id(self))
         service_type_list = self.dao.getServices()
         for service_type in service_type_list:
             self._load_request_type_codes(service_type)
             self._load_result_codes(service_type)
         self._load_object_types()
-    
+
     def _load_request_type_codes(self, service_type):
         """
             Request ([service name][request type name] -> (service int code, request type int code) mapping from
             the server. 
         """
+        logging.debug("<Logger %s> getRequestTypesByService %s" % (id(self), service_type.id))
         request_type_list = self.dao.getRequestTypesByService(service_type.id)
         for request_type in request_type_list:
             if self.request_type_codes.get(service_type.name) is None:
@@ -175,13 +179,15 @@ finally:
             Request ([service name][result name] -> (service int code, result int code) mapping from
             the server. 
         """
+        logging.debug("<Logger %s> getResultCodesByService %s" % (id(self), service_type.id))
         result_codes_list = self.dao.getResultCodesByService(service_type.id)
         for result_code in result_codes_list:
             if self.result_codes.get(service_type.name) is None:
                 self.result_codes[service_type.name] = {}
             self.result_codes[service_type.name][result_code.name] = result_code.result_code
-    
+
     def _load_object_types(self):
+        #logging.debug("<Logger %s> getObjectTypes" % id(self))
         object_type_list = []#self.dao.getObjectTypes()
         for object_type in object_type_list:
             self.object_types[object_type.name] = object_type.id
@@ -207,7 +213,6 @@ finally:
         value = recoder.u2c(value)
         prop = self.corba_module.RequestProperty(name, value, False, child)
         return prop
-        
 
     def convert_properties(self, properties):
         """
@@ -252,8 +257,12 @@ finally:
             raise ValueError(
                 "Invalid service and/or request type '%s'-'%s'. Original exception: %s." %
                 (service_name, request_type_name, traceback.format_exc()))
+        logging.debug("<Logger %s> createRequest %s %s %s %s %s %s %s" % (
+            id(self), source_ip, service_code, content,
+            converted_properties, converted_references, request_type_code, session_id
+        ))
         request_id = self.dao.createRequest(
-            source_ip, service_code, content, converted_properties, converted_references, request_type_code, session_id) 
+            source_ip, service_code, content, converted_properties, converted_references, request_type_code, session_id)
         if request_id == 0:
             raise LoggingException(
                 "Failed to create a request with args: (%s, %s, %s, %s, %s, %s)." %
@@ -292,7 +301,6 @@ class LogRequest(object):
         self.request_type = request_type
         self.result = default_result
 
-
     def close(self, result=None, content="", properties=None, references=None, session_id=None):
         """ Close this logging request. Warning: the request cannot be changed
             anymore after closing. """
@@ -303,9 +311,11 @@ class LogRequest(object):
         converted_references = self.logger.convert_references(references)
         if not session_id:
             session_id = 0
+        logging.debug("<Logger %s> closeRequest %s %s %s %s %s %s" % (
+            id(self), self.request_id, content, converted_properties, converted_references, result_code, session_id
+        ))
         self.dao.closeRequest(self.request_id, content, 
                               converted_properties, converted_references, result_code, session_id)
-
 
 
 class LoggerFailSilent(Logger):
