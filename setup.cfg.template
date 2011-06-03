@@ -1,0 +1,2 @@
+[bdist_rpm]
+install-extra-opts=--prefix=/usr --sysconfdir=/etc --localstatedir=/var
