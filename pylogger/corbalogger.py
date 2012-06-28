@@ -211,12 +211,12 @@ finally:
             value = str(self._convert_nested_to_str(value))
         name = recoder.u2c(name)
         value = recoder.u2c(value)
-        prop = self.corba_module.RequestProperty(name, value, False, child)
+        prop = self.corba_module.RequestProperty(name, value, child)
         return prop
 
     def convert_properties(self, properties):
         """
-            Convert python list of [name, value, output, child] to list of RequestProperties.
+            Convert python list of [name, value, child] to list of RequestProperties.
             (Output and child are optional)
         """
         converted_properties = []
