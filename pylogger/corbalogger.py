@@ -100,6 +100,7 @@ finally:
             'MojeID': 'Error',
             'EPP': 'CommandFailed',
             'WebAdmin': 'Error',
+            'Public Request': 'Error',
         }
 
     def start_session(self, user_id, username):
