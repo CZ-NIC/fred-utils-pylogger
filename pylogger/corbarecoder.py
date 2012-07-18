@@ -12,12 +12,12 @@ class DecodeError(Exception):
 
 class CorbaRecode(object):
 
-    def __init__(self, coding = 'utf-8'):
+    def __init__(self, coding='utf-8'):
         object.__init__(self)
         self.BasicTypes = (
                 types.BooleanType,
-                types.FloatType, 
-                types.IntType, 
+                types.FloatType,
+                types.IntType,
                 types.LongType
                 )
         self.IterTypes = (
@@ -50,7 +50,7 @@ class CorbaRecode(object):
                 if type(item) in self.IterTypes:
                     answer.__dict__[name] = [ self.decode(x) for x in item ]
             return answer
-        
+
     def encode(self, answer):
         if isinstance(answer, unicode): # types.UnicodeType
             return answer.encode(self.coding)

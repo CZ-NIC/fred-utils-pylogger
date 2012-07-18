@@ -12,7 +12,7 @@ import traceback
 import datetime
 import logging
 
-__all__ = ["Logger", "LogRequest", 
+__all__ = ["Logger", "LogRequest",
             "LoggingException", "service_type_webadmin"]
 
 # Constant representing web admin service type (hardcoded in db).
@@ -30,7 +30,7 @@ service_type_webadmin = 4
 
 
 class Logger(object):
-    """ 
+    """
     Logger for a session.
 
     Example usage (in nicms):
@@ -66,9 +66,9 @@ finally:
     req.close()
 
     Attributes:
-        request_types: Dictionary containing ((service string name, request type string name) -> 
+        request_types: Dictionary containing ((service string name, request type string name) ->
             (service id int, request type id int) mapping.
-        dao: Data Access Object. That's where we get our data from / send them 
+        dao: Data Access Object. That's where we get our data from / send them
             to.
     """
 
@@ -76,21 +76,21 @@ finally:
         """Inits Logger.
 
             Arguments:
-                dao: Data Access Object for the logger. 
+                dao: Data Access Object for the logger.
                     That's where we get our data from / send them to.
-                    Generally it's a Corba Logger object for normal use and 
+                    Generally it's a Corba Logger object for normal use and
                     mock object for unit tests.
 
         """
         self.dao = dao
         self.corba_module = corba_module
-        
+
         self.request_type_codes = {}
         self.result_codes = {}
         self.object_types = {}
         #self.service_codes = {}
         self._load_all_type_codes()
-        
+
         # Default result code for each service (aka unexpected error) - for each service, there will
         # be some default result code, which will be set in constructor of request, so when
         # there will be unexpecded error, in try: finally: will be req.close() which will close it
@@ -100,7 +100,7 @@ finally:
             'MojeID': 'Error',
             'EPP': 'CommandFailed',
             'WebAdmin': 'Error',
-        } 
+        }
 
     def start_session(self, user_id, username):
         """Starts a new logging session.
@@ -121,8 +121,8 @@ finally:
                 """Logging session failed to start with args: (%s).""" % username)
         return session_id
 
-    def create_request(self, source_ip, service_name, request_type_name, 
-                       properties=None, references = None, session_id=None, 
+    def create_request(self, source_ip, service_name, request_type_name,
+                       properties=None, references=None, session_id=None,
                        default_result=None, content=''):
         """
             Creates a request object on the server.
@@ -141,7 +141,7 @@ finally:
         return dummylogger.DummyLogRequest(*args, **kwargs)
 
     def close_session(self, session_id):
-        """ 
+        """
             Tells the server to close this logging session.
             Returns True iff session closed successfully.
         """
@@ -152,7 +152,7 @@ finally:
 
     def _load_all_type_codes(self):
         """
-            Loads all service types and request types to attributes 
+            Loads all service types and request types to attributes
             request_type_codes and service_codes.
         """
         logging.debug("<Logger %s> getServices" % id(self))
@@ -165,7 +165,7 @@ finally:
     def _load_request_type_codes(self, service_type):
         """
             Request ([service name][request type name] -> (service int code, request type int code) mapping from
-            the server. 
+            the server.
         """
         logging.debug("<Logger %s> getRequestTypesByService %s" % (id(self), service_type.id))
         request_type_list = self.dao.getRequestTypesByService(service_type.id)
@@ -177,7 +177,7 @@ finally:
     def _load_result_codes(self, service_type):
         """
             Request ([service name][result name] -> (service int code, result int code) mapping from
-            the server. 
+            the server.
         """
         logging.debug("<Logger %s> getResultCodesByService %s" % (id(self), service_type.id))
         result_codes_list = self.dao.getResultCodesByService(service_type.id)
@@ -227,7 +227,7 @@ finally:
                 child = prop[2] if len(prop) > 2 else False
                 converted_property = self._convert_property(name, value, child)
                 converted_properties.append(converted_property)
-        return converted_properties    
+        return converted_properties
 
     def convert_references(self, references):
         converted_references = []
@@ -238,7 +238,7 @@ finally:
                 converted_references.append(self.corba_module.ObjectReference(object_type, ref[1]))
         return converted_references
 
-    def _server_create_request(self, source_ip, content, service_name, request_type_name, 
+    def _server_create_request(self, source_ip, content, service_name, request_type_name,
                                 properties, references, session_id):
         """
             Ask the server to create a new logging request.
@@ -271,14 +271,14 @@ finally:
 
 
 class LogRequest(object):
-    """ 
-        A request for logging. Use one LogRequest object for one request to be 
-        logged and use the update method to log the necessary information for 
+    """
+        A request for logging. Use one LogRequest object for one request to be
+        logged and use the update method to log the necessary information for
         this request.
 
         Should NOT be instantiated directly; use Logger.create_request.
 
-        Example usage: 
+        Example usage:
             req = session_logger.create_request(...)
             req.update("example_property", 132)
             ...
@@ -287,9 +287,9 @@ class LogRequest(object):
         Arguments:
             dao: Data Access Object for logging. Usually Corba Logger object.
             request_id: Integer identifier of the request.
-            throws_exceptions: Boolean. True iff Logger throws 
+            throws_exceptions: Boolean. True iff Logger throws
                 exceptions.
-            log: When we encounter an error, this function is called with 
+            log: When we encounter an error, this function is called with
                 a string description of what happened.
     """
 
@@ -314,12 +314,12 @@ class LogRequest(object):
         logging.debug("<Logger %s> closeRequest %s %s %s %s %s %s" % (
             id(self), self.request_id, content, converted_properties, converted_references, result_code, session_id
         ))
-        self.dao.closeRequest(self.request_id, content, 
+        self.dao.closeRequest(self.request_id, content,
                               converted_properties, converted_references, result_code, session_id)
 
 
 class LoggerFailSilent(Logger):
-    """ Logger that does not raise exceptions on failure. 
+    """ Logger that does not raise exceptions on failure.
     """
     def __init__(self, *args, **kwargs):
         Logger.__init__(self, *args, **kwargs)
@@ -337,15 +337,15 @@ class LoggerFailSilent(Logger):
         except Exception, e:
             logging.error('Logger failed to error during start_session: %s.', e)
 
-    def create_request(self, source_ip, service_name, request_type_name, 
-                       properties=None, references = None, session_id=None, 
+    def create_request(self, source_ip, service_name, request_type_name,
+                       properties=None, references=None, session_id=None,
                        default_result=None, content=''):
         try:
             if default_result is None:
                 default_result = self.default_results.get(service_name)
                 if default_result is None:
                     raise LoggingException('Service "%s" doesn\'t have specified default result code!' % service_name)
-            
+
             properties = properties or []
             request_id = self._server_create_request(
                 source_ip, content, service_name, request_type_name, properties, references, session_id)
@@ -355,7 +355,7 @@ class LoggerFailSilent(Logger):
             logging.error('Logger failed to error during create_request: %s.', e)
             return dummylogger.DummyLogRequest()
 
-    def close_session(self, *args, **kwargs): 
+    def close_session(self, *args, **kwargs):
         try:
             Logger.close_session(self, *args, **kwargs)
         except Exception:

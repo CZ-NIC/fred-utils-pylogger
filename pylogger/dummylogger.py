@@ -24,7 +24,7 @@ class DummyLogger(object):
     def create_dummy_request(self, *args, **kwargs):
         return DummyLogRequest()
 
-    def close_session(self, *args, **kwargs): 
+    def close_session(self, *args, **kwargs):
         pass
 
 
