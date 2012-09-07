@@ -1,2 +1,12 @@
+2012-09-07 Tomas Divis, Vlastimil Zima, Juraj Vicenik (1.2.0)
+
+    * Whitespace normalization and PEP8-ification
+
+    * Update due to distutils changes (setup.cfg)
+
+    * Removed output flag from properties interface
+
+    * Add default result code for public request service
+
 2010-10-19 Tomas Divis (1.0.0)
     * initial version of python logging component
