@@ -15,6 +15,9 @@ class DummyLogger(object):
     object_types = {}
     default_results = {}
 
+    def __init__(self, *args, **kwargs):
+        pass
+
     def start_session(self, *args, **kwargs):
         pass
 
