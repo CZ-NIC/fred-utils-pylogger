@@ -97,6 +97,7 @@ finally:
         # with this default result.
         # Note: If useful, this should go to backend and not be specified here
         self.default_results = {
+            'Admin': 'Error',
             'MojeID': 'Error',
             'EPP': 'CommandFailed',
             'WebAdmin': 'Error',
