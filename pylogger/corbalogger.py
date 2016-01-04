@@ -1,16 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """
-    Logging framework.
+Logging framework.
 """
-
-import corbarecoder as recoder
-import dummylogger
-import omniORB
-import traceback
 import datetime
 import logging
+import traceback
+
+import omniORB
+
+from . import corbarecoder as recoder, dummylogger
 
 __all__ = ["Logger", "LogRequest",
             "LoggingException", "service_type_webadmin"]

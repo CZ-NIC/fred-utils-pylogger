@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import types
 import codecs
+import types
 
 
 class UnsupportedEncodingError(Exception):
