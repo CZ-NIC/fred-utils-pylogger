@@ -12,7 +12,7 @@ import omniORB
 from . import corbarecoder as recoder, dummylogger
 
 __all__ = ["Logger", "LogRequest",
-            "LoggingException", "service_type_webadmin"]
+           "LoggingException", "service_type_webadmin"]
 
 # Constant representing web admin service type (hardcoded in db).
 service_type_webadmin = 4
@@ -20,7 +20,6 @@ service_type_webadmin = 4
 """
 *** Module initialization section. ***
 """
-
 
 
 """
@@ -87,7 +86,6 @@ finally:
         self.request_type_codes = {}
         self.result_codes = {}
         self.object_types = {}
-        #self.service_codes = {}
         self._load_all_type_codes()
 
         # Default result code for each service (aka unexpected error) - for each service, there will
@@ -188,8 +186,7 @@ finally:
             self.result_codes[service_type.name][result_code.name] = result_code.result_code
 
     def _load_object_types(self):
-        #logging.debug("<Logger %s> getObjectTypes" % id(self))
-        object_type_list = []#self.dao.getObjectTypes()
+        object_type_list = []
         for object_type in object_type_list:
             self.object_types[object_type.name] = object_type.id
 
@@ -234,13 +231,13 @@ finally:
         converted_references = []
         if references:
             for ref in references:
-                #object_type = self.object_types[ref[0]]
-                object_type = ref[0] # TODO: change to previous line when
+                # object_type = self.object_types[ref[0]]
+                object_type = ref[0]  # TODO: change to previous line when
                 converted_references.append(self.corba_module.ObjectReference(object_type, ref[1]))
         return converted_references
 
-    def _server_create_request(self, source_ip, content, service_name, request_type_name,
-                                properties, references, session_id):
+    def _server_create_request(self, source_ip, content, service_name, request_type_name, properties, references,
+                               session_id):
         """
             Ask the server to create a new logging request.
             Returns request id iff request has been created successfully.
@@ -331,7 +328,7 @@ class LoggerFailSilent(Logger):
         except LoggingException:
             pass
         except omniORB.CORBA.SystemException:
-            #TODO: Re-think somehow?
+            # TODO: Re-think somehow?
             # I have to reraise it, so that I know in ADIF.login that I should
             # hide away the logger...
             raise
@@ -359,7 +356,7 @@ class LoggerFailSilent(Logger):
     def close_session(self, *args, **kwargs):
         try:
             Logger.close_session(self, *args, **kwargs)
-        except Exception:
+        except Exception as e:
             logging.error('Logger failed to error during close_session: %s.', e)
 
 
