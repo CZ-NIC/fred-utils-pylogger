@@ -99,6 +99,7 @@ finally:
             'EPP': 'CommandFailed',
             'WebAdmin': 'Error',
             'Public Request': 'Error',
+            'Web whois': 'Error',
         }
 
     def start_session(self, user_id, username):
