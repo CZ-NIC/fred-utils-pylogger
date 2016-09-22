@@ -1,12 +1,13 @@
 APP = pylogger
 
-.PHONY: default isort check-isort check-flake8
+.PHONY: default isort check-isort check-flake8 check-all
 
-default:
-	echo "No default action, specify the target"
+default: check-all
 
 isort:
 	isort --recursive ${APP}
+
+check-all: check-isort check-flake8
 
 check-isort:
 	isort --recursive --check-only --diff ${APP}
