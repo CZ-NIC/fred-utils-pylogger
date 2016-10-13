@@ -99,6 +99,7 @@ finally:
             'EPP': 'CommandFailed',
             'WebAdmin': 'Error',
             'Public Request': 'Error',
+            'RDAP': 'InternalServerError',
             'Web whois': 'Error',
         }
 
