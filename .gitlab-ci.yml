@@ -1,10 +1,15 @@
+stages:
+    - analysis
+
 before_script:
     - pip list
 
 isort:
     image: cznic/ubuntu_python_runner:latest
+    stage: analysis
     script: "make check-isort"
 
 flake8:
     image: cznic/ubuntu_python_runner:latest
+    stage: analysis
     script: "make check-flake8"
