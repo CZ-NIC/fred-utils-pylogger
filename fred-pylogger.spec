@@ -1,6 +1,7 @@
 %define name fred-pylogger
 %define release 1
 %global __os_install_post %(echo '%{__os_install_post}' | sed -e 's!/usr/lib[^[:space:]]*/brp-python-bytecompile[[:space:]].*$!!g')
+%define debug_package %{nil}
 
 Summary: Library contains wrapper for FRED Logger
 Name: %{name}
