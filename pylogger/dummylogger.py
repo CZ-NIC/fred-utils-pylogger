@@ -5,11 +5,12 @@ __all__ = ["DummyLogger"]
 
 class DummyLogger(object):
     """
-        Dummy Logger. Never logs anything and never
-        fails.
-        Used to imitate normal logger, when you don't want to log anything (e.g.
-        because you don't want to connect via Corba).
+    Dummy Logger. Never logs anything and never fails.
+
+    Used to imitate normal logger, when you don't want to log anything (e.g.
+    because you don't want to connect via Corba).
     """
+
     request_type_codes = {}
     result_codes = {}
     object_types = {}

@@ -1,8 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-"""
-Logging framework.
-"""
+"""Logging framework."""
 import datetime
 import logging
 import traceback
@@ -31,53 +29,56 @@ class Logger(object):
     """
     Logger for a session.
 
-    Example usage (in nicms):
-from apps.nicommon.utils import get_logger
-logger = get_logger()
-props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True]]
-req = logger.create_request("127.0.0.1", "MojeID", "UserChange", props)
-req.result = 'Success'
-req.close()
----
-from apps.nicommon.utils import get_logger
-logger = get_logger()
-session_id = logger.start_session(1, "username")
-props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True]]
-req = logger.create_request("127.0.0.1", "MojeID", "UserChange", props, session_id=session_id)
-req.result = 'Success'
-out_props = [['e', 3], ['f', 'Example'], ['g', 1], ['h', 4, True]]
-req.close(properties = out_props)
-logger.close_session(session_id)
-
-    Usually, when logging some action, it should look like:
-
-from apps.nicommon.utils import get_logger
-logger = get_logger()
-props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True, True]]
-req = logger.create_request("127.0.0.1", "EPP", "NSsetUpdate", props)
-try:
-    PERFORM_ACTION()
+    Examples
+    --------
+    from apps.nicommon.utils import get_logger
+    logger = get_logger()
+    props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True]]
+    req = logger.create_request("127.0.0.1", "MojeID", "UserChange", props)
     req.result = 'Success'
-ecxept KnownException, e:
-    req.result = 'Fail'
-finally:
     req.close()
+    ---
+    from apps.nicommon.utils import get_logger
+    logger = get_logger()
+    session_id = logger.start_session(1, "username")
+    props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True]]
+    req = logger.create_request("127.0.0.1", "MojeID", "UserChange", props, session_id=session_id)
+    req.result = 'Success'
+    out_props = [['e', 3], ['f', 'Example'], ['g', 1], ['h', 4, True]]
+    req.close(properties = out_props)
+    logger.close_session(session_id)
 
-    Attributes:
+        Usually, when logging some action, it should look like:
+
+    from apps.nicommon.utils import get_logger
+    logger = get_logger()
+    props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True, True]]
+    req = logger.create_request("127.0.0.1", "EPP", "NSsetUpdate", props)
+    try:
+        PERFORM_ACTION()
+        req.result = 'Success'
+    ecxept KnownException, e:
+        req.result = 'Fail'
+    finally:
+        req.close()
+
+    Attributes
+    ----------
         request_types: Dictionary containing ((service string name, request type string name) ->
             (service id int, request type id int) mapping.
         dao: Data Access Object. That's where we get our data from / send them
             to.
+
     """
 
     def __init__(self, dao, corba_module):
-        """Inits Logger.
+        """Init Logger.
 
-            Arguments:
-                dao: Data Access Object for the logger.
-                    That's where we get our data from / send them to.
-                    Generally it's a Corba Logger object for normal use and
-                    mock object for unit tests.
+        Arguments:
+            dao: Data Access Object for the logger.
+                That's where we get our data from / send them to.
+                Generally it's a Corba Logger object for normal use and
+                mock object for unit tests.
 
         """
         self.dao = dao
@@ -104,11 +105,11 @@ finally:
         }
 
     def start_session(self, user_id, username):
-        """Starts a new logging session.
+        """Start a new logging session.
 
-            Arguments:
-                userid: Int. Registrar id for EPP session or user id for other apps.
-                username: String. Registrar Handle for EPP session or username for other apps.
+        Arguments:
+            userid: Int. Registrar id for EPP session or user id for other apps.
+            username: String. Registrar Handle for EPP session or username for other apps.
         """
         if not isinstance(username, basestring):
             username = str(username)
@@ -126,8 +127,9 @@ finally:
                        properties=None, references=None, session_id=None,
                        default_result=None, content=''):
         """
-            Creates a request object on the server.
-            Returns a new LogRequest object or None on error.
+        Create a request object on the server.
+
+        Returns a new LogRequest object or None on error.
         """
         if default_result is None:
             default_result = self.default_results.get(service_name)
@@ -143,8 +145,9 @@ finally:
 
     def close_session(self, session_id):
         """
-            Tells the server to close this logging session.
-            Returns True iff session closed successfully.
+        Tell the server to close this logging session.
+
+        Returns True iff session closed successfully.
         """
         if session_id is None:
             raise LoggingException("Error in close_session: session_id cannot be None.")
@@ -152,10 +155,7 @@ finally:
         self.dao.closeSession(session_id)
 
     def _load_all_type_codes(self):
-        """
-            Loads all service types and request types to attributes
-            request_type_codes and service_codes.
-        """
+        """Load all service types and request types to attributes request_type_codes and service_codes."""
         logging.debug("<Logger %s> getServices" % id(self))
         service_type_list = self.dao.getServices()
         for service_type in service_type_list:
@@ -165,8 +165,9 @@ finally:
 
     def _load_request_type_codes(self, service_type):
         """
-            Request ([service name][request type name] -> (service int code, request type int code) mapping from
-            the server.
+        Load request_type mapping from the server.
+
+        ([service name][request type name] -> (service int code, request type int code)
         """
         logging.debug("<Logger %s> getRequestTypesByService %s" % (id(self), service_type.id))
         request_type_list = self.dao.getRequestTypesByService(service_type.id)
@@ -177,8 +178,9 @@ finally:
 
     def _load_result_codes(self, service_type):
         """
-            Request ([service name][result name] -> (service int code, result int code) mapping from
-            the server.
+        Load result_code mapping form the server.
+
+        ([service name][result name] -> (service int code, result int code)
         """
         logging.debug("<Logger %s> getResultCodesByService %s" % (id(self), service_type.id))
         result_codes_list = self.dao.getResultCodesByService(service_type.id)
@@ -193,8 +195,7 @@ finally:
             self.object_types[object_type.name] = object_type.id
 
     def _convert_nested_to_str(self, value):
-        """ Converts nested lists (or tuples) of objects to nested lists of
-            strings. """
+        """Convert nested lists (or tuples) of objects to nested lists of strings."""
         if isinstance(value, (datetime.date, datetime.datetime)):
             return value.isoformat()
         if not isinstance(value, list) and not isinstance(value, tuple):
@@ -202,9 +203,7 @@ finally:
         return [self._convert_nested_to_str(item) for item in value]
 
     def _convert_property(self, name, value, child):
-        """
-            Converts input pareametrs to RequestProperty
-        """
+        """Convert input pareametrs to RequestProperty."""
         if not isinstance(name, basestring):
             name = str(name)
         if not isinstance(value, basestring):
@@ -215,10 +214,7 @@ finally:
         return prop
 
     def convert_properties(self, properties):
-        """
-            Convert python list of [name, value, child] to list of RequestProperties.
-            (Output and child are optional)
-        """
+        """Convert python list of [name, value, child] to list of RequestProperties (Output and child are optional)."""
         converted_properties = []
         if properties:
             for prop in properties:
@@ -241,8 +237,9 @@ finally:
     def _server_create_request(self, source_ip, content, service_name, request_type_name, properties, references,
                                session_id):
         """
-            Ask the server to create a new logging request.
-            Returns request id iff request has been created successfully.
+        Ask the server to create a new logging request.
+
+        Returns request id iff request has been created successfully.
         """
         if content is None:
             content = ""
@@ -272,25 +269,26 @@ finally:
 
 class LogRequest(object):
     """
-        A request for logging. Use one LogRequest object for one request to be
-        logged and use the update method to log the necessary information for
-        this request.
+    A request for logging.
 
-        Should NOT be instantiated directly; use Logger.create_request.
+    Use one LogRequest object for one request to be logged and use the update
+    method to log the necessary information for this request.
 
-        Example usage:
-            req = session_logger.create_request(...)
-            req.update("example_property", 132)
-            ...
-            req.close("")
+    Should NOT be instantiated directly; use Logger.create_request.
 
-        Arguments:
-            dao: Data Access Object for logging. Usually Corba Logger object.
-            request_id: Integer identifier of the request.
-            throws_exceptions: Boolean. True iff Logger throws
-                exceptions.
-            log: When we encounter an error, this function is called with
-                a string description of what happened.
+    Example usage:
+        req = session_logger.create_request(...)
+        req.update("example_property", 132)
+        ...
+        req.close("")
+
+    Arguments:
+        dao: Data Access Object for logging. Usually Corba Logger object.
+        request_id: Integer identifier of the request.
+        throws_exceptions: Boolean. True iff Logger throws
+            exceptions.
+        log: When we encounter an error, this function is called with
+            a string description of what happened.
     """
 
     def __init__(self, logger, request_id, service, request_type, default_result):
@@ -302,8 +300,10 @@ class LogRequest(object):
         self.result = default_result
 
     def close(self, result=None, content="", properties=None, references=None, session_id=None):
-        """ Close this logging request. Warning: the request cannot be changed
-            anymore after closing. """
+        """Close this logging request.
+
+        Warning: the request cannot be changed anymore after closing.
+        """
         if result is not None:
             self.result = result
         result_code = self.logger.result_codes[self.service][self.result]
@@ -319,8 +319,8 @@ class LogRequest(object):
 
 
 class LoggerFailSilent(Logger):
-    """ Logger that does not raise exceptions on failure.
-    """
+    """Logger that does not raise exceptions on failure."""
+
     def __init__(self, *args, **kwargs):
         Logger.__init__(self, *args, **kwargs)
 
@@ -363,8 +363,8 @@ class LoggerFailSilent(Logger):
 
 
 class LogRequestFailSilent(LogRequest):
-    """ LogRequest that does not raise exceptions on failure (to be used with
-        LoggerFailSilent). """
+    """LogRequest that does not raise exceptions on failure (to be used with LoggerFailSilent)."""
+
     def __init__(self, *args, **kwargs):
         LogRequest.__init__(self, *args, **kwargs)
 
@@ -376,7 +376,8 @@ class LogRequestFailSilent(LogRequest):
 
 
 class LoggingException(Exception):
-    """ Generic exception thrown by this logging framework. """
+    """Generic exception thrown by this logging framework."""
+
     def __init__(self, value):
         Exception.__init__(self, value)
         self.value = value
