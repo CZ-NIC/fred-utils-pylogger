@@ -9,4 +9,5 @@ setup(name='fred-pylogger',
       url='http://www.nic.cz/',
       license='GNU GPL',
       platforms=['posix'],
-      packages=find_packages())
+      packages=find_packages(),
+      install_requires=['pyfco'])

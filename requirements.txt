@@ -1,0 +1,1 @@
+-e git+git@gitlab.office.nic.cz:utils/pyfco.git#egg=pyfco

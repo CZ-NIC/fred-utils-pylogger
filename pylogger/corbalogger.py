@@ -6,8 +6,9 @@ import logging
 import traceback
 
 import omniORB
+from pyfco import u2c
 
-from . import corbarecoder as recoder, dummylogger
+from . import dummylogger
 
 __all__ = ["Logger", "LogRequest",
            "LoggingException", "service_type_webadmin"]
@@ -114,7 +115,7 @@ class Logger(object):
         if not isinstance(username, basestring):
             username = str(username)
         else:
-            username = recoder.u2c(username)
+            username = u2c(username)
 
         logging.debug("<Logger %s> createSession %s %s" % (id(self), user_id, username))
         session_id = self.dao.createSession(user_id, username)
@@ -208,8 +209,8 @@ class Logger(object):
             name = str(name)
         if not isinstance(value, basestring):
             value = str(self._convert_nested_to_str(value))
-        name = recoder.u2c(name)
-        value = recoder.u2c(value)
+        name = u2c(name)
+        value = u2c(value)
         prop = self.corba_module.RequestProperty(name, value, child)
         return prop
 
