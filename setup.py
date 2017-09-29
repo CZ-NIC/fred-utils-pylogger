@@ -10,4 +10,5 @@ setup(name='fred-pylogger',
       license='GNU GPL',
       platforms=['posix'],
       packages=find_packages(),
-      install_requires=['pyfco'])
+      install_requires=['pyfco'],
+      dependency_links=['git+ssh://git@gitlab.office.nic.cz/utils/pyfco.git@master#egg=pyfco-0'])
