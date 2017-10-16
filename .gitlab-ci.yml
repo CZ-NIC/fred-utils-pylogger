@@ -2,7 +2,8 @@ stages:
     - analysis
 
 isort:
-    image: cznic/ubuntu_python_runner:latest
+    tags:
+        - python2
     stage: analysis
     before_script:
         - pip install isort
@@ -10,7 +11,8 @@ isort:
     script: "make check-isort"
 
 flake8:
-    image: cznic/ubuntu_python_runner:latest
+    tags:
+        - python2
     stage: analysis
     before_script:
         - pip install flake8
