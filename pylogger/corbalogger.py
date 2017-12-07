@@ -4,8 +4,10 @@
 import datetime
 import logging
 import traceback
+import warnings
 
 import omniORB
+from fred_idl import ccReg
 from pyfco import u2c
 
 from . import dummylogger
@@ -72,7 +74,7 @@ class Logger(object):
 
     """
 
-    def __init__(self, dao, corba_module):
+    def __init__(self, dao, corba_module=None):
         """Init Logger.
 
         Arguments:
@@ -83,7 +85,11 @@ class Logger(object):
 
         """
         self.dao = dao
-        self.corba_module = corba_module
+        if corba_module is not None:
+            warnings.warn("Argument 'corba_module' is deprecated. It needs to be removed.", DeprecationWarning)
+            self.corba_module = corba_module
+        else:
+            self.corba_module = ccReg
 
         self.request_type_codes = {}
         self.result_codes = {}
