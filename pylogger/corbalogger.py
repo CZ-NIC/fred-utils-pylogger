@@ -109,6 +109,7 @@ class Logger(object):
             'Public Request': 'Error',
             'RDAP': 'InternalServerError',
             'Web whois': 'Error',
+            'Domainbrowser': 'Error',
         }
 
     def start_session(self, user_id, username):
