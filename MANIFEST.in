@@ -1,2 +1,2 @@
 include MANIFEST.in
-include fred-pylogger.spec
+include contrib/fedora/fred-pylogger.spec
