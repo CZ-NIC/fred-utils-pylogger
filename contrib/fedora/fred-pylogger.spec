@@ -15,22 +15,17 @@ Prefix: %{_prefix}
 BuildArch: noarch
 Vendor: CZ.NIC <fred@nic.cz>
 Url: https://fred.nic.cz/
-BuildRequires: fred-distutils
+BuildRequires: python-setuptools
 Requires: python
 
 %description
-UNKNOWN
+Python libraries to access logging component of FRED registry system
 
 %prep
 %setup -n %{name}-%{unmangled_version}
 
-%build
-python setup.py build
-
-
 %install
-python setup.py install -cO2 --force --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES --prefix=/usr --install-sysconf=/etc --install-localstate=/var
-
+python setup.py install -cO2 --force --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES --prefix=/usr
 
 %clean
 rm -rf $RPM_BUILD_ROOT
