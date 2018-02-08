@@ -342,7 +342,7 @@ class LoggerFailSilent(Logger):
             # I have to reraise it, so that I know in ADIF.login that I should
             # hide away the logger...
             raise
-        except Exception, e:
+        except Exception as e:
             logging.error('Logger failed to error during start_session: %s.', e)
 
     def create_request(self, source_ip, service_name, request_type_name,
@@ -359,7 +359,7 @@ class LoggerFailSilent(Logger):
                 source_ip, content, service_name, request_type_name, properties, references, session_id)
             log_request = LogRequestFailSilent(self, request_id, service_name, request_type_name, default_result)
             return log_request
-        except Exception, e:
+        except Exception as e:
             logging.error('Logger failed to error during create_request: %s.', e)
             return dummylogger.DummyLogRequest()
 
@@ -379,7 +379,7 @@ class LogRequestFailSilent(LogRequest):
     def close(self, *args, **kwargs):
         try:
             LogRequest.close(self, *args, **kwargs)
-        except Exception, e:
+        except Exception as e:
             logging.error('Logger failed to error during request.close: %s.', e)
 
 
