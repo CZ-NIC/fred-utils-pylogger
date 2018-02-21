@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 """Logging framework."""
+from __future__ import unicode_literals
+
 import datetime
 import logging
 import traceback
