@@ -12,29 +12,11 @@ stages:
 
 ########################################################################################################################
 # Individual jobs
-isort:
+quality:
     <<: *requires-python
     <<: *python2-xenial
     stage: analysis
     before_script:
-        - pip install isort
-        - pip list
-    script: "make check-isort"
-
-flake8:
-    <<: *requires-python
-    <<: *python2-xenial
-    stage: analysis
-    before_script:
-        - pip install flake8
-        - pip list
-    script: "make check-flake8"
-
-pydocstyle:
-    <<: *requires-python
-    <<: *python2-xenial
-    stage: analysis
-    before_script:
-        - pip install pydocstyle
-        - pip list
-    script: "make check-doc"
+        - pip install tox
+    script:
+        - tox -e quality

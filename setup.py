@@ -11,5 +11,6 @@ setup(name='fred-pylogger',
       license='GNU GPL',
       platforms=['posix'],
       packages=find_packages(),
-      install_requires=['fred-pyfco'],
-      dependency_links=['git+ssh://git@gitlab.office.nic.cz/fred/utils/pyfco.git@master#egg=fred-pyfco-0'])
+      install_requires=open('requirements.txt').read().splitlines(),
+      extras_require={'quality': ['isort', 'flake8', 'pydocstyle']},
+      dependency_links=open('dependency_links.txt').read().splitlines())
