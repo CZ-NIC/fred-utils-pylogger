@@ -4,3 +4,4 @@ fred-pylogger-*/
 fred_pylogger.egg-info/
 *.pyc
 RELEASE-VERSION
+/.tox
