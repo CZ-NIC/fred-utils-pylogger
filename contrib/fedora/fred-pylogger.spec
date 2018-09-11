@@ -1,13 +1,11 @@
-%define name fred-pylogger
-%define release 1
 %global __os_install_post %(echo '%{__os_install_post}' | sed -e 's!/usr/lib[^[:space:]]*/brp-python-bytecompile[[:space:]].*$!!g')
 %define debug_package %{nil}
 
 Summary: Library contains wrapper for FRED Logger
-Name: %{name}
-Version: %{version}
-Release: %{release}
-Source0: %{name}-%{unmangled_version}.tar.gz
+Name: fred-pylogger
+Version: %{our_version}
+Release: %{?our_release}%{!?our_release:1}%{?dist}
+Source0: %{name}-%{version}.tar.gz
 License: GNU GPL
 Group: Development/Libraries
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -22,7 +20,7 @@ Requires: python
 Python libraries to access logging component of FRED registry system
 
 %prep
-%setup -n %{name}-%{unmangled_version}
+%setup -n %{name}-%{version}
 
 %install
 python setup.py install -cO2 --force --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES --prefix=/usr
