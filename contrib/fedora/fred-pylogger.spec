@@ -23,7 +23,7 @@ Python libraries to access logging component of FRED registry system
 %setup -n %{name}-%{version}
 
 %install
-python setup.py install -cO2 --force --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES --prefix=/usr
+python2 setup.py install -cO2 --force --root=$RPM_BUILD_ROOT --record=INSTALLED_FILES --prefix=/usr
 
 %clean
 rm -rf $RPM_BUILD_ROOT
