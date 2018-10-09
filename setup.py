@@ -3,7 +3,7 @@
 from setuptools import find_packages, setup
 
 setup(name='fred-pylogger',
-      version='1.14.0',
+      version='1.15.0',
       description='Library contains wrapper for FRED Logger',
       author='Tomáš Diviš, CZ.NIC',
       author_email='vlastimil.zima@nic.cz',
