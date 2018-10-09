@@ -9,6 +9,7 @@ import traceback
 import warnings
 
 import omniORB
+import six
 from fred_idl import ccReg
 from pyfco import u2c
 
@@ -121,10 +122,10 @@ class Logger(object):
             userid: Int. Registrar id for EPP session or user id for other apps.
             username: String. Registrar Handle for EPP session or username for other apps.
         """
-        if not isinstance(username, basestring):
-            username = str(username)
-        else:
-            username = u2c(username)
+        if not isinstance(username, six.string_types):
+            warnings.warn("Username other that string is deprecated.", DeprecationWarning)
+            username = six.text_type(username)
+        username = u2c(username)
 
         logging.debug("<Logger %s> createSession %s %s" % (id(self), user_id, username))
         session_id = self.dao.createSession(user_id, username)
@@ -209,15 +210,15 @@ class Logger(object):
         if isinstance(value, (datetime.date, datetime.datetime)):
             return value.isoformat()
         if not isinstance(value, list) and not isinstance(value, tuple):
-            return str(value)
+            return six.text_type(value)
         return [self._convert_nested_to_str(item) for item in value]
 
     def _convert_property(self, name, value, child):
         """Convert input pareametrs to RequestProperty."""
-        if not isinstance(name, basestring):
-            name = str(name)
-        if not isinstance(value, basestring):
-            value = str(self._convert_nested_to_str(value))
+        if not isinstance(name, six.string_types):
+            name = six.text_type(name)
+        if not isinstance(value, six.string_types):
+            value = six.text_type(self._convert_nested_to_str(value))
         name = u2c(name)
         value = u2c(value)
         prop = self.corba_module.RequestProperty(name, value, child)
