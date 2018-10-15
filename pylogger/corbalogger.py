@@ -136,7 +136,7 @@ class Logger(object):
 
     def create_request(self, source_ip, service_name, request_type_name,
                        properties=None, references=None, session_id=None,
-                       default_result=None, content=b''):
+                       default_result=None, content=''):
         """
         Create a request object on the server.
 
@@ -253,7 +253,7 @@ class Logger(object):
         Returns request id iff request has been created successfully.
         """
         if content is None:
-            content = b""
+            content = ""
         if session_id is None:
             session_id = 0
 
@@ -270,7 +270,8 @@ class Logger(object):
             converted_properties, converted_references, request_type_code, session_id
         ))
         request_id = self.dao.createRequest(
-            source_ip, service_code, content, converted_properties, converted_references, request_type_code, session_id)
+            source_ip, service_code, u2c(content), converted_properties, converted_references, request_type_code,
+            session_id)
         if request_id == 0:
             raise LoggingException(
                 "Failed to create a request with args: (%s, %s, %s, %s, %s, %s)." %
@@ -310,7 +311,7 @@ class LogRequest(object):
         self.request_type = request_type
         self.result = default_result
 
-    def close(self, result=None, content=b"", properties=None, references=None, session_id=None):
+    def close(self, result=None, content="", properties=None, references=None, session_id=None):
         """Close this logging request.
 
         Warning: the request cannot be changed anymore after closing.
@@ -325,7 +326,7 @@ class LogRequest(object):
         logging.debug("<Logger %s> closeRequest %s %s %s %s %s %s" % (
             id(self), self.request_id, content, converted_properties, converted_references, result_code, session_id
         ))
-        self.dao.closeRequest(self.request_id, content,
+        self.dao.closeRequest(self.request_id, u2c(content),
                               converted_properties, converted_references, result_code, session_id)
 
 
@@ -350,7 +351,7 @@ class LoggerFailSilent(Logger):
 
     def create_request(self, source_ip, service_name, request_type_name,
                        properties=None, references=None, session_id=None,
-                       default_result=None, content=b''):
+                       default_result=None, content=''):
         try:
             if default_result is None:
                 default_result = self.default_results.get(service_name)
