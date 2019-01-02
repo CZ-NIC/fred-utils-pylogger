@@ -19,3 +19,10 @@ test:
         - pip install tox "virtualenv<=16.2.0"
     script:
         - tox
+
+licensing:
+    <<: *python2-xenial
+    before_script:
+        - git clone git@gitlab.office.nic.cz:internal-tools/license-check.git --single-branch --depth 1
+    script:
+        - ./license-check/license-check.sh -v
