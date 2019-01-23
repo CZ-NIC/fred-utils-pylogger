@@ -1,3 +1,6 @@
+variables:
+    VIRTUALENV_NO_DOWNLOAD: "1"
+
 ########################################################################################################################
 # Basic declarations
 .requires-python: &requires-python
