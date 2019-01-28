@@ -16,6 +16,6 @@ test:
     <<: *requires-python
     <<: *python2-xenial
     before_script:
-        - pip install tox
+        - pip install tox "virtualenv<=16.2.0"
     script:
         - tox
