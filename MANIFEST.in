@@ -1,3 +1,5 @@
 include contrib/fedora/fred-pylogger.spec
 include dependency_links.txt
 include requirements.txt
+include COPYING
+include LICENSE
