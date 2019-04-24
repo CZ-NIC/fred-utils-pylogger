@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2010-2018  CZ.NIC, z. s. p. o.
+# Copyright (C) 2010-2019  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -30,5 +30,4 @@ setup(name='fred-pylogger',
       platforms=['posix'],
       packages=find_packages(),
       install_requires=open('requirements.txt').read().splitlines(),
-      extras_require={'quality': ['isort', 'flake8', 'pydocstyle']},
-      dependency_links=open('dependency_links.txt').read().splitlines())
+      extras_require={'quality': ['isort', 'flake8', 'pydocstyle']})

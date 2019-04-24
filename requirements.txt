@@ -1,2 +1,2 @@
-fred-pyfco
+fred-pyfco @ git+ssh://git@gitlab.office.nic.cz/fred/utils/pyfco.git
 six

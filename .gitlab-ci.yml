@@ -2,9 +2,6 @@ stages:
     - analysis
     - test
 
-variables:
-    VIRTUALENV_NO_DOWNLOAD: "1"
-
 ########################################################################################################################
 # Basic declarations
 .requires-python: &requires-python
@@ -21,7 +18,7 @@ test:
     <<: *python2-xenial
     stage: test
     before_script:
-        - pip install tox "virtualenv<=16.2.0"
+        - pip install tox
     script:
         - tox
 
