@@ -13,8 +13,8 @@ Prefix: %{_prefix}
 BuildArch: noarch
 Vendor: CZ.NIC <fred@nic.cz>
 Url: https://fred.nic.cz/
-BuildRequires: python-setuptools
-Requires: python
+BuildRequires: python2-setuptools
+Requires: python2
 
 %description
 Python libraries to access logging component of FRED registry system
