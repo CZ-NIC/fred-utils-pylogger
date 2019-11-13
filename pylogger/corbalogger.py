@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2010-2018  CZ.NIC, z. s. p. o.
+# Copyright (C) 2010-2019  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -53,41 +53,39 @@ class Logger(object):
     """
     Logger for a session.
 
-    Examples
-    --------
-    from apps.nicommon.utils import get_logger
-    logger = get_logger()
-    props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True]]
-    req = logger.create_request("127.0.0.1", "MojeID", "UserChange", props)
-    req.result = 'Success'
-    req.close()
-    ---
-    from apps.nicommon.utils import get_logger
-    logger = get_logger()
-    session_id = logger.start_session(1, "username")
-    props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True]]
-    req = logger.create_request("127.0.0.1", "MojeID", "UserChange", props, session_id=session_id)
-    req.result = 'Success'
-    out_props = [['e', 3], ['f', 'Example'], ['g', 1], ['h', 4, True]]
-    req.close(properties = out_props)
-    logger.close_session(session_id)
+    Examples:
+        from apps.nicommon.utils import get_logger
+        logger = get_logger()
+        props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True]]
+        req = logger.create_request("127.0.0.1", "MojeID", "UserChange", props)
+        req.result = 'Success'
+        req.close()
+        ---
+        from apps.nicommon.utils import get_logger
+        logger = get_logger()
+        session_id = logger.start_session(1, "username")
+        props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True]]
+        req = logger.create_request("127.0.0.1", "MojeID", "UserChange", props, session_id=session_id)
+        req.result = 'Success'
+        out_props = [['e', 3], ['f', 'Example'], ['g', 1], ['h', 4, True]]
+        req.close(properties = out_props)
+        logger.close_session(session_id)
 
         Usually, when logging some action, it should look like:
 
-    from apps.nicommon.utils import get_logger
-    logger = get_logger()
-    props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True, True]]
-    req = logger.create_request("127.0.0.1", "EPP", "NSsetUpdate", props)
-    try:
-        PERFORM_ACTION()
-        req.result = 'Success'
-    ecxept KnownException, e:
-        req.result = 'Fail'
-    finally:
-        req.close()
+        from apps.nicommon.utils import get_logger
+        logger = get_logger()
+        props = [['a', 3], ['b', 'Example'], ['c', 1, True], ['d', 4, True, True]]
+        req = logger.create_request("127.0.0.1", "EPP", "NSsetUpdate", props)
+        try:
+            PERFORM_ACTION()
+            req.result = 'Success'
+        ecxept KnownException, e:
+            req.result = 'Fail'
+        finally:
+            req.close()
 
-    Attributes
-    ----------
+    Attributes:
         request_types: Dictionary containing ((service string name, request type string name) ->
             (service id int, request type id int) mapping.
         dao: Data Access Object. That's where we get our data from / send them
