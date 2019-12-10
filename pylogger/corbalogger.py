@@ -101,7 +101,7 @@ class Logger(object):
                 That's where we get our data from / send them to.
                 Generally it's a Corba Logger object for normal use and
                 mock object for unit tests.
-
+            corba_module: Corba module to be used. This argument is deprecated.
         """
         self.dao = dao
         if corba_module is not None:
@@ -135,7 +135,7 @@ class Logger(object):
         """Start a new logging session.
 
         Arguments:
-            userid: Int. Registrar id for EPP session or user id for other apps.
+            user_id: Int. Registrar id for EPP session or user id for other apps.
             username: String. Registrar Handle for EPP session or username for other apps.
         """
         if not isinstance(username, six.string_types):
