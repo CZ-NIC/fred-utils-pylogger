@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2010-2018  CZ.NIC, z. s. p. o.
+# Copyright (C) 2010-2019  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -24,8 +24,7 @@ __all__ = ["DummyLogger"]
 
 
 class DummyLogger(object):
-    """
-    Dummy Logger. Never logs anything and never fails.
+    """Dummy Logger. Never logs anything and never fails.
 
     Used to imitate normal logger, when you don't want to log anything (e.g.
     because you don't want to connect via Corba).
