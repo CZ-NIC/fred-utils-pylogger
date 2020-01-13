@@ -50,8 +50,7 @@ service_type_webadmin = 4
 
 
 class Logger(object):
-    """
-    Logger for a session.
+    """Logger for a session.
 
     Examples:
         from apps.nicommon.utils import get_logger
@@ -153,8 +152,7 @@ class Logger(object):
     def create_request(self, source_ip, service_name, request_type_name,
                        properties=None, references=None, session_id=None,
                        default_result=None, content=''):
-        """
-        Create a request object on the server.
+        """Create a request object on the server.
 
         Returns a new LogRequest object or None on error.
         """
@@ -171,8 +169,7 @@ class Logger(object):
         return dummylogger.DummyLogRequest(*args, **kwargs)
 
     def close_session(self, session_id):
-        """
-        Tell the server to close this logging session.
+        """Tell the server to close this logging session.
 
         Returns True iff session closed successfully.
         """
@@ -191,8 +188,7 @@ class Logger(object):
         self._load_object_types()
 
     def _load_request_type_codes(self, service_type):
-        """
-        Load request_type mapping from the server.
+        """Load request_type mapping from the server.
 
         ([service name][request type name] -> (service int code, request type int code)
         """
@@ -204,8 +200,7 @@ class Logger(object):
             self.request_type_codes[service_type.name][request_type.name] = (service_type.id, request_type.id)
 
     def _load_result_codes(self, service_type):
-        """
-        Load result_code mapping form the server.
+        """Load result_code mapping form the server.
 
         ([service name][result name] -> (service int code, result int code)
         """
@@ -263,8 +258,7 @@ class Logger(object):
 
     def _server_create_request(self, source_ip, content, service_name, request_type_name, properties, references,
                                session_id):
-        """
-        Ask the server to create a new logging request.
+        """Ask the server to create a new logging request.
 
         Returns request id iff request has been created successfully.
         """
@@ -296,8 +290,7 @@ class Logger(object):
 
 
 class LogRequest(object):
-    """
-    A request for logging.
+    """A request for logging.
 
     Use one LogRequest object for one request to be logged and use the update
     method to log the necessary information for this request.
