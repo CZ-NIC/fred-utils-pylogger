@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2010-2019  CZ.NIC, z. s. p. o.
+# Copyright (C) 2010-2020  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -24,7 +24,6 @@ from __future__ import unicode_literals
 import datetime
 import logging
 import traceback
-import warnings
 
 import omniORB
 import six
@@ -92,7 +91,7 @@ class Logger(object):
 
     """
 
-    def __init__(self, dao, corba_module=None):
+    def __init__(self, dao):
         """Init Logger.
 
         Arguments:
@@ -103,12 +102,6 @@ class Logger(object):
             corba_module: Corba module to be used. This argument is deprecated.
         """
         self.dao = dao
-        if corba_module is not None:
-            warnings.warn("Argument 'corba_module' is deprecated. It needs to be removed.", DeprecationWarning)
-            self.corba_module = corba_module
-        else:
-            self.corba_module = ccReg
-
         self.request_type_codes = {}
         self.result_codes = {}
         self.object_types = {}
@@ -137,9 +130,6 @@ class Logger(object):
             user_id: Int. Registrar id for EPP session or user id for other apps.
             username: String. Registrar Handle for EPP session or username for other apps.
         """
-        if not isinstance(username, six.string_types):
-            warnings.warn("Username other that string is deprecated.", DeprecationWarning)
-            username = six.text_type(username)
         username = u2c(username)
 
         logging.debug("<Logger %s> createSession %s %s" % (id(self), user_id, username))
@@ -232,7 +222,7 @@ class Logger(object):
             value = six.text_type(self._convert_nested_to_str(value))
         name = u2c(name)
         value = u2c(value)
-        prop = self.corba_module.RequestProperty(name, value, child)
+        prop = ccReg.RequestProperty(name, value, child)
         return prop
 
     def convert_properties(self, properties):
@@ -253,7 +243,7 @@ class Logger(object):
             for ref in references:
                 # object_type = self.object_types[ref[0]]
                 object_type = ref[0]  # TODO: change to previous line when
-                converted_references.append(self.corba_module.ObjectReference(object_type, ref[1]))
+                converted_references.append(ccReg.ObjectReference(object_type, ref[1]))
         return converted_references
 
     def _server_create_request(self, source_ip, content, service_name, request_type_name, properties, references,
