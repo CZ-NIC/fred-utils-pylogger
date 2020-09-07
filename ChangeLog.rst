@@ -1,7 +1,7 @@
 ChangeLog
 =========
 
-1.16.1 (2019-11-20 1.16.1)
+1.16.1 (2019-11-20)
 --------------------------
 
 * Update spec file for F31 and Centos/RHEL 8
@@ -39,21 +39,21 @@ ChangeLog
 * CI configuration fixes
 * Fedora packaging
 
-1.2.1 (2013-07-03) Jaromir Talir, Vlastimil Zima 
-------------------------------------------------
+1.2.1 (2013-07-03)
+------------------
 
 * Updating setup.cfg according recent fred-distutils changes
 * Fix initialization of dummy logger
 
-1.2.0 (2012-09-07) Tomas Divis, Vlastimil Zima, Juraj Vicenik 
--------------------------------------------------------------
+1.2.0 (2012-09-07)
+------------------
 
 * Whitespace normalization and PEP8-ification
 * Update due to distutils changes (setup.cfg)
 * Removed output flag from properties interface
 * Add default result code for public request service
 
-1.0.0 (2010-10-19) Tomas Divis 
-------------------------------
+1.0.0 (2010-10-19)
+------------------
 
 * initial version of python logging component
