@@ -1,6 +1,17 @@
 ChangeLog
 =========
 
+2.0.0 (2021-01-28)
+-------------------
+
+* Drop deprecated arguments.
+* Code style related fixes.
+* Update dependency formats.
+* Disable zip install.
+* Convert ``ChangeLog.md`` to ``CHANGELOG.rst``.
+* Update test and CI setup.
+* Add bumpversion.
+
 1.16.1 (2019-11-20)
 -------------------
 
