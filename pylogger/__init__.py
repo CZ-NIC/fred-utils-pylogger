@@ -17,4 +17,4 @@
 # along with FRED.  If not, see <https://www.gnu.org/licenses/>.
 from __future__ import unicode_literals
 
-__version__ = '1.16.1'
+__version__ = '2.0.0'
