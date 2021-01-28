@@ -2,7 +2,7 @@ ChangeLog
 =========
 
 1.16.1 (2019-11-20)
---------------------------
+-------------------
 
 * Update spec file for F31 and Centos/RHEL 8
 
@@ -12,7 +12,7 @@ ChangeLog
 * License GNU GPLv3+
 * CI fixes
 
-1.15.0 (2018-10-09) 
+1.15.0 (2018-10-09)
 -------------------
 
 * Fix bugs under Python 3.
@@ -23,17 +23,17 @@ ChangeLog
 
 * Use tox for testing.
 
-1.13.0 (2018-03-08) 
+1.13.0 (2018-03-08)
 -------------------
 
 * Prepare for Python 3 - clean up code and use ``unicode_literals``.
 
-1.12.0 (2018-02-16) 
+1.12.0 (2018-02-16)
 -------------------
 
 * Packaging update
 
-1.7.0 (2017-03-02) 
+1.7.0 (2017-03-02)
 ------------------
 
 * CI configuration fixes
