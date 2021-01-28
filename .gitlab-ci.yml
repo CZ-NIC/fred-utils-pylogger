@@ -1,58 +1,29 @@
-stages:
-    - image
-    - analysis
-    - test
+variables:
+    DOCKER_REGISTRY: "archive.nic.cz:5000"
+    # Set up pip cache shared between all jobs of the project.
+    PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+    TOX_PARALLEL_NO_SPINNER: 1
 
-########################################################################################################################
-# Docker
-.image: &image
-    stage: image
-    before_script:
-        - docker info
-    script:
-        # Login to GitLab container registry https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#using-the-gitlab-container-registry
-        - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-        # Build image using Docker caching, see https://docs.gitlab.com/ee/ci/docker/using_docker_build.html#making-docker-in-docker-builds-faster-with-docker-layer-caching
-        - docker pull "$IMAGE_TAG" || true
-        - docker build --cache-from "$IMAGE_TAG" -t "$IMAGE_TAG" "docker/$IMAGE_NAME"
-        - docker push "$IMAGE_TAG"
-    tags:
-        - dind
-
-image:ubuntu:bionic:
-    <<: *image
-    variables:
-        IMAGE_NAME: ubuntu:bionic
-        IMAGE_TAG: $CI_REGISTRY_IMAGE/$IMAGE_NAME
+cache:
+    paths:
+        - .cache/pip
 
 ########################################################################################################################
 # Basic declarations
-.ubuntu-bionic: &ubuntu-bionic
-    image: "$CI_REGISTRY/$CI_PROJECT_PATH/ubuntu:bionic"
-
-.install-dependencies: &install-dependencies
-    before_script:
-        # Set up SSH key for access to gitlab repositories
-        - install -m 700 -d $HOME/.ssh
-        - install -m 600 $SRC_DIR/{id_rsa,id_rsa.pub,known_hosts} $HOME/.ssh/
-    variables:
-        SRC_DIR: /usr/local/env
+.py38: &py38
+    image: "$DOCKER_REGISTRY/python/tox:3.8"
 
 .test: &test
-    <<: *install-dependencies
     script:
         - tox
 
 ########################################################################################################################
 # Individual jobs
 licensing:
-    <<: *ubuntu-bionic
-    <<: *install-dependencies
-    stage: analysis
     script:
         - git clone git@gitlab.office.nic.cz:internal-tools/license-check.git --single-branch --depth 1
         - ./license-check/license-check.sh -v
 
-test:bionic:
+test:py38:
     <<: *test
-    <<: *ubuntu-bionic
+    <<: *py38
