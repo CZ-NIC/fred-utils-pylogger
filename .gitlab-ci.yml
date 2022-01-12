@@ -20,9 +20,11 @@ cache:
 ########################################################################################################################
 # Individual jobs
 licensing:
+    image: "$DOCKER_REGISTRY/utils/license-check:latest"
+    tags:
+        - common
     script:
-        - git clone git@gitlab.office.nic.cz:internal-tools/license-check.git --single-branch --depth 1
-        - ./license-check/license-check.sh -v
+        - license-check -v
 
 test:py38:
     <<: *test
