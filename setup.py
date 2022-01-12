@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2010-2021  CZ.NIC, z. s. p. o.
+# Copyright (C) 2010-2022  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -21,7 +21,7 @@
 from setuptools import find_packages, setup
 
 setup(name='fred-pylogger',
-      version='2.0.0',
+      version='2.0.2',
       description='Library contains wrapper for FRED Logger',
       author='Tomáš Diviš, CZ.NIC',
       author_email='vlastimil.zima@nic.cz',

@@ -1,6 +1,17 @@
 ChangeLog
 =========
 
+2.0.2 (2022-01-12)
+-------------------
+
+* Update Fedora builds.
+
+2.0.1 (2022-01-12)
+-------------------
+
+* Loosen IDL version requirements.
+* Update static checks.
+
 2.0.0 (2021-01-28)
 -------------------
 
