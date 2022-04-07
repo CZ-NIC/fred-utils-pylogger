@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# Copyright (C) 2010-2020  CZ.NIC, z. s. p. o.
+# Copyright (C) 2010-2022  CZ.NIC, z. s. p. o.
 #
 # This file is part of FRED.
 #
@@ -116,10 +116,13 @@ class Logger(object):
             'MojeID': 'Error',
             'EPP': 'CommandFailed',
             'WebAdmin': 'Error',
-            'Public Request': 'Error',
+            'PublicRequest': 'Error',
             'RDAP': 'InternalServerError',
-            'Web whois': 'Error',
+            'WebWhois': 'Error',
             'Domainbrowser': 'Error',
+            # Old service names with space.
+            'Public Request': 'Error',
+            'Web whois': 'Error',
         }
 
     def start_session(self, user_id, username):
@@ -187,6 +190,11 @@ class Logger(object):
             if self.request_type_codes.get(service_type.name) is None:
                 self.request_type_codes[service_type.name] = {}
             self.request_type_codes[service_type.name][request_type.name] = (service_type.id, request_type.id)
+            # Keep codes for old service names.
+            if service_type.name == 'WebWhois':
+                self.request_type_codes['Web whois'][request_type.name] = (service_type.id, request_type.id)
+            if service_type.name == 'PublicRequest':
+                self.request_type_codes['Public Request'][request_type.name] = (service_type.id, request_type.id)
 
     def _load_result_codes(self, service_type):
         """Load result_code mapping form the server.
@@ -199,6 +207,11 @@ class Logger(object):
             if self.result_codes.get(service_type.name) is None:
                 self.result_codes[service_type.name] = {}
             self.result_codes[service_type.name][result_code.name] = result_code.result_code
+            # Keep codes for old service names.
+            if service_type.name == 'WebWhois':
+                self.result_codes['Web whois'][result_code.name] = result_code.result_code
+            if service_type.name == 'PublicRequest':
+                self.result_codes['Public Request'][result_code.name] = result_code.result_code
 
     def _load_object_types(self):
         object_type_list = []
