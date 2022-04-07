@@ -21,7 +21,7 @@
 from setuptools import find_packages, setup
 
 setup(name='fred-pylogger',
-      version='2.0.2',
+      version='2.0.3',
       description='Library contains wrapper for FRED Logger',
       author='Tomáš Diviš, CZ.NIC',
       author_email='vlastimil.zima@nic.cz',

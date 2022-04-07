@@ -1,6 +1,12 @@
 ChangeLog
 =========
 
+2.0.3 (2022-04-07)
+-------------------
+
+* Add compatibility for spaceless service names.
+* Switch to a docker repo.
+
 2.0.2 (2022-01-12)
 -------------------
 
