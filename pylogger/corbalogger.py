@@ -192,9 +192,11 @@ class Logger(object):
             self.request_type_codes[service_type.name][request_type.name] = (service_type.id, request_type.id)
             # Keep codes for old service names.
             if service_type.name == 'WebWhois':
-                self.request_type_codes['Web whois'][request_type.name] = (service_type.id, request_type.id)
+                codes = self.request_type_codes.setdefault('Web whois', {})
+                codes[request_type.name] = (service_type.id, request_type.id)
             if service_type.name == 'PublicRequest':
-                self.request_type_codes['Public Request'][request_type.name] = (service_type.id, request_type.id)
+                codes = self.request_type_codes.setdefault('Public Request', {})
+                codes[request_type.name] = (service_type.id, request_type.id)
 
     def _load_result_codes(self, service_type):
         """Load result_code mapping form the server.
@@ -209,9 +211,11 @@ class Logger(object):
             self.result_codes[service_type.name][result_code.name] = result_code.result_code
             # Keep codes for old service names.
             if service_type.name == 'WebWhois':
-                self.result_codes['Web whois'][result_code.name] = result_code.result_code
+                codes = self.result_codes.setdefault('Web whois', {})
+                codes[result_code.name] = result_code.result_code
             if service_type.name == 'PublicRequest':
-                self.result_codes['Public Request'][result_code.name] = result_code.result_code
+                codes = self.result_codes.setdefault('Public Request', {})
+                codes[result_code.name] = result_code.result_code
 
     def _load_object_types(self):
         object_type_list = []
