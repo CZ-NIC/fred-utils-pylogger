@@ -1,6 +1,12 @@
 ChangeLog
 =========
 
+
+2.0.4 (2022-04-08)
+-------------------
+
+* Fix compatibility for spaceless service names.
+
 2.0.3 (2022-04-07)
 -------------------
 
